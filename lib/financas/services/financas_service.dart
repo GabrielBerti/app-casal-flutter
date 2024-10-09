@@ -1,3 +1,4 @@
+import 'package:app_casal_flutter/financas/models/resumo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
 import 'package:app_casal_flutter/financas/services/financas_endpoints.dart';
 import 'package:app_casal_flutter/financas/services/financas_interceptor.dart';
@@ -22,8 +23,6 @@ class FinancasService {
   Future<List<Transacao>?> getTransactions() async {
     try {
       Response response = await _dio.get(_dio.options.baseUrl);
-      // await _dio.get('https://jsonplaceholder.typicode.com/posts/1');
-
       // print(response.statusCode);
       // print(response.headers.toString());
       // print(response.data);
@@ -68,7 +67,20 @@ class FinancasService {
     }
   }
 
-  // Future<void> clearServerData() async {
-  //   await _dio.delete(FinancasEndpoints.listins);
-  // }
+  Future<Resumo?> getResume() async {
+    try {
+      Response response =
+          await _dio.get('${_dio.options.baseUrl}/recuperaResumo');
+
+      if (response.statusCode == 200) {
+        Resumo resumo = Resumo.fromJson(response.data);
+        return resumo;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Erro ao buscar resumo: $e');
+      return null;
+    }
+  }
 }

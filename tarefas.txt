@@ -2,7 +2,6 @@
     - Alterar transação
     - Remover transação
     - Remover todas transações
-    - Ajustar header com os dados reais
     - Fazer validações de campos obrigatórios no formulário
     - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro
     - Limpar todos os campos do formulário apos clicar em salvar ou cancelar

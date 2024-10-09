@@ -1,5 +1,6 @@
 import 'package:app_casal_flutter/financas/componentes/header_financas.dart';
 import 'package:app_casal_flutter/financas/componentes/transacao_item.dart';
+import 'package:app_casal_flutter/financas/models/resumo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
 import 'package:app_casal_flutter/financas/services/financas_service.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ class HomeFinancas extends StatefulWidget {
 
 class _HomeFinancasState extends State<HomeFinancas> {
   List<Transacao> listTransacoes = [];
+  Resumo resumo = Resumo(saldoBiel: 0.0, saldoMari: 0.0);
+
   final FinancasService _financasService = FinancasService();
 
   final TextEditingController _descricaoController = TextEditingController();
@@ -28,6 +31,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
 
   @override
   void initState() {
+    getResume();
     getTransactions();
     super.initState();
   }
@@ -40,7 +44,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
       ),
       body: Column(
         children: [
-          const HeaderFinancas(),
+          HeaderFinancas(
+            resumo: resumo,
+          ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: _refreshList,
@@ -65,6 +71,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
   }
 
   Future<void> _refreshList() async {
+    await getResume();
     await getTransactions();
   }
 
@@ -200,8 +207,19 @@ class _HomeFinancasState extends State<HomeFinancas> {
         await _financasService.addTransaction(formTransacion);
 
     if (newTransaction != null) {
+      getResume();
       getTransactions();
     }
+  }
+
+  getResume() async {
+    Resumo? resume = await _financasService.getResume();
+
+    setState(() {
+      if (resume != null) {
+        resumo = resume;
+      }
+    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
