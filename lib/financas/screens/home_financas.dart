@@ -42,11 +42,14 @@ class _HomeFinancasState extends State<HomeFinancas> {
         children: [
           const HeaderFinancas(),
           Expanded(
-            child: ListView.builder(
-              itemCount: listTransacoes.length,
-              itemBuilder: (context, index) {
-                return TransacaoItem(transacao: listTransacoes[index]);
-              },
+            child: RefreshIndicator(
+              onRefresh: _refreshList,
+              child: ListView.builder(
+                itemCount: listTransacoes.length,
+                itemBuilder: (context, index) {
+                  return TransacaoItem(transacao: listTransacoes[index]);
+                },
+              ),
             ),
           ),
         ],
@@ -59,6 +62,10 @@ class _HomeFinancasState extends State<HomeFinancas> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _refreshList() async {
+    await getTransactions();
   }
 
   void _showAddTransactionDialog(BuildContext context) {

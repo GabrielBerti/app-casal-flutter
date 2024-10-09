@@ -5,8 +5,6 @@
     - Ajustar header com os dados reais
     - Fazer validações de campos obrigatórios no formulário
     - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro
-    - Refresh da tela
-    - Mascarar todos os campos
     - Limpar todos os campos do formulário apos clicar em salvar ou cancelar
     - Verificar TODOs
     - Refatorar o código e separar responsabilidades (como na home_financas, criar arquivo para o componente de _showAddTransactionDialog)

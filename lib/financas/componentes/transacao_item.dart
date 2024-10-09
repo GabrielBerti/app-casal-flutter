@@ -62,7 +62,8 @@ class TransacaoItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      transacao.valor.toString(),
+                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                          .format(transacao.valor),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
