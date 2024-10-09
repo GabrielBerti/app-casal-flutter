@@ -7,14 +7,14 @@ void main() {
 }
 
 class AppCasal extends StatelessWidget {
-  const AppCasal({ Key? key }) : super(key: key);
+    const AppCasal({ super.key });
 
-  @override
-  Widget build(BuildContext context){
+    @override
+    Widget build(BuildContext context){
     return MaterialApp(
       title: 'App Casal',
       theme: MyTheme,
-      home: Home(),
+      home: const Home(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:app_casal_flutter/financas/screens/home_financas.dart';
 import 'package:app_casal_flutter/modulo_card_item.dart';
 import 'package:app_casal_flutter/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
@@ -39,22 +40,39 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              const ModuloCardItem(
+              ModuloCardItem(
                   text: "Finanças",
                   icon: Icons.monetization_on_outlined,
-                  colorBg: ThemeColors.yellowCard),
-              const ModuloCardItem(
+                  colorBg: ThemeColors.yellowCard,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (contextNew) => HomeFinancas(),
+                      ),
+                    );
+                  }),
+              ModuloCardItem(
                   text: "Metas",
                   icon: Icons.done_outline_rounded,
-                  colorBg: ThemeColors.purpleCard),
-              const ModuloCardItem(
+                  colorBg: ThemeColors.purpleCard,
+                  onTap: () {
+                    print('Módulo metas clicado!');
+                  }),
+              ModuloCardItem(
                   text: "Receitas",
                   icon: Icons.food_bank_outlined,
-                  colorBg: ThemeColors.blueCard),
-              const ModuloCardItem(
+                  colorBg: ThemeColors.blueCard,
+                  onTap: () {
+                    print('Módulo receitas clicado!');
+                  }),
+              ModuloCardItem(
                   text: "Viagens",
                   icon: Icons.card_travel_outlined,
-                  colorBg: ThemeColors.pinkCard),
+                  colorBg: ThemeColors.pinkCard,
+                  onTap: () {
+                    print('Módulo viagens clicado!');
+                  }),
             ],
           ),
         ),

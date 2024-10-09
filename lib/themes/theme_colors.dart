@@ -18,4 +18,7 @@ class ThemeColors {
   static const purpleCard = Color.fromRGBO(139, 44, 165, 1);
   static const blueCard = Color.fromRGBO(74, 98, 238, 1);
   static const pinkCard = Color.fromRGBO(224, 46, 162, 1);
+
+  static const colorMari = Color.fromRGBO(224, 46, 162, 1);
+  static const colorBiel = Color.fromRGBO(61, 138, 245, 1);
 }
