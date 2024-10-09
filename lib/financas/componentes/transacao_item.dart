@@ -1,3 +1,4 @@
+import 'package:app_casal_flutter/financas/models/tipo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
 import 'package:app_casal_flutter/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class TransacaoItem extends StatelessWidget {
                 Icon(
                   Icons.attach_money_outlined,
                   size: 42,
-                  color: transacao.tipo == "BIEL"
+                  color: transacao.tipo == Tipo.biel
                       ? ThemeColors.colorBiel
                       : ThemeColors.colorMari,
                 ),

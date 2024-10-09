@@ -49,7 +49,7 @@ class FinancasService {
         'data': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .format(newTransaction.data),
         'descricao': newTransaction.descricao,
-        'tipo': newTransaction.tipo.toUpperCase(),
+        'tipo': newTransaction.tipo.toString().toUpperCase(),
         'valor': newTransaction.valor,
       };
 

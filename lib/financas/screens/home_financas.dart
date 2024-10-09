@@ -1,6 +1,7 @@
 import 'package:app_casal_flutter/financas/componentes/header_financas.dart';
 import 'package:app_casal_flutter/financas/componentes/transacao_item.dart';
 import 'package:app_casal_flutter/financas/models/resumo.dart';
+import 'package:app_casal_flutter/financas/models/tipo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
 import 'package:app_casal_flutter/financas/services/financas_service.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
     thousandSeparator: '.',
   );
   DateTime? _selectedDate;
-  String? _tipo = 'Mari'; // Valor inicial do RadioButton
+  String? _tipo = Tipo.mari.toString(); // Valor inicial do RadioButton
 
   @override
   void initState() {
@@ -180,7 +181,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
                 } else {
                   addTransaction(Transacao(
                     descricao: _descricaoController.text,
-                    tipo: _tipo ?? '',
+                    tipo: _tipo == Tipo.mari.toString() ? Tipo.mari : Tipo.biel,
                     valor: _valorController.numberValue,
                     data: _selectedDate ?? DateTime.now(),
                   ));
@@ -237,7 +238,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
     _descricaoController.text = "";
     _valorController.text = "0.0";
     _selectedDate = null;
-    _tipo = "Mari";
+    _tipo = Tipo.mari.toString();
   }
 
   Future<void> _selectDate(

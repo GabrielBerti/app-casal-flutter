@@ -1,0 +1,1 @@
+enum Tipo { mari, biel }
