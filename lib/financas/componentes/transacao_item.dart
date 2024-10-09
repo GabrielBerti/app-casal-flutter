@@ -13,7 +13,7 @@ class TransacaoItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: double.infinity, // Ocupará toda a largura disponível
         ),
         child: Container(

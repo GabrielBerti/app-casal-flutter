@@ -21,11 +21,16 @@ class FinancasInterceptor extends Interceptor {
     log +=
         "Cabeçalho: ${const JsonEncoder.withIndent("  ").convert(options.headers)}\n";
 
-    //TODO verificar como resolver o erro no post
-    // if (options.data != null) {
-    //   log +=
-    //       "Corpo: ${const JsonEncoder.withIndent("  ").convert(json.decode(options.data.toString()))}\n";
-    // }
+    if (options.data != null) {
+      try {
+        log +=
+            "Corpo: ${const JsonEncoder.withIndent("  ").convert(json.decode(options.data.toString()))}\n";
+      } catch (e) {
+        log += "Corpo: ${options.data}\n";
+      }
+    } else {
+      log += "Corpo: null\n";
+    }
 
     _logger.w(log);
     super.onRequest(options, handler);

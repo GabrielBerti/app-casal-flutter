@@ -108,7 +108,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
                   ),
                   style: const TextStyle(fontSize: 14),
                   onTap: () {
-                    _selectDate(context);
+                    _selectDate(context, _selectedDate);
                   },
                 ),
                 TextField(
@@ -168,18 +168,30 @@ class _HomeFinancasState extends State<HomeFinancas> {
           actions: [
             TextButton(
               onPressed: () {
-                addTransaction(Transacao(
-                  descricao: _descricaoController.text,
-                  tipo: _tipo ?? '',
-                  valor: _valorController.numberValue,
-                  data: _selectedDate ?? DateTime.now(),
-                ));
-                Navigator.of(context).pop(); // Fechar o diálogo
+                if (_descricaoController.text.isEmpty ||
+                    _valorController.numberValue <= 0 ||
+                    _selectedDate == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Preencha todos os campos!'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  addTransaction(Transacao(
+                    descricao: _descricaoController.text,
+                    tipo: _tipo ?? '',
+                    valor: _valorController.numberValue,
+                    data: _selectedDate ?? DateTime.now(),
+                  ));
+                  Navigator.of(context).pop(); // Fechar o diálogo
+                }
               },
               child: const Text('Salvar', style: TextStyle(fontSize: 14)),
             ),
             TextButton(
               onPressed: () {
+                resetFieldsForm();
                 Navigator.of(context).pop(); // Fechar o diálogo
               },
               child: const Text('Cancelar', style: TextStyle(fontSize: 14)),
@@ -191,8 +203,6 @@ class _HomeFinancasState extends State<HomeFinancas> {
   }
 
   getTransactions() async {
-    // Basta alimentar essa variável com Listins que, quando o método for
-    // chamado, a tela sera reconstruída com os itens.
     List<Transacao>? listaTransacao = await _financasService.getTransactions();
 
     setState(() {
@@ -207,6 +217,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
         await _financasService.addTransaction(formTransacion);
 
     if (newTransaction != null) {
+      resetFieldsForm();
       getResume();
       getTransactions();
     }
@@ -222,10 +233,18 @@ class _HomeFinancasState extends State<HomeFinancas> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  resetFieldsForm() {
+    _descricaoController.text = "";
+    _valorController.text = "0.0";
+    _selectedDate = null;
+    _tipo = "Mari";
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, DateTime? dateTimeSelected) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: dateTimeSelected ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );

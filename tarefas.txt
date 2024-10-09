@@ -2,11 +2,7 @@
     - Alterar transação
     - Remover transação
     - Remover todas transações
-    - Fazer validações de campos obrigatórios no formulário
     - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro
-    - Limpar todos os campos do formulário apos clicar em salvar ou cancelar
-    - Verificar TODOs
-    - Refatorar o código e separar responsabilidades (como na home_financas, criar arquivo para o componente de _showAddTransactionDialog)
 
 - Módulo Metas
 
