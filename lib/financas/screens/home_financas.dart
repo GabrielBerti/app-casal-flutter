@@ -55,19 +55,40 @@ class _HomeFinancasState extends State<HomeFinancas> {
               child: ListView.builder(
                 itemCount: listTransacoes.length,
                 itemBuilder: (context, index) {
-                  return TransacaoItem(
-                      transacao: listTransacoes[index],
+                  final transacao = listTransacoes[index];
+
+                  return Dismissible(
+                    key: Key(transacao.id
+                        .toString()), // Usar um identificador único para o item
+                    direction: DismissDirection
+                        .endToStart, // Deslizar da direita para esquerda
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      color: Colors.red, // Cor de fundo ao deslizar
+                      child: const Icon(Icons.delete,
+                          color: Colors.white), // Ícone de lixeira
+                    ),
+                    onDismissed: (direction) {
+                      setState(() {
+                        listTransacoes.removeAt(index);
+                      });
+
+                      removeTransaction(transacao.id.toString());
+                    },
+                    child: TransacaoItem(
+                      transacao: transacao,
                       onTap: () {
-                        idTransacao = listTransacoes[index].id;
-                        _descricaoController.text =
-                            listTransacoes[index].descricao;
-                        _valorController.text =
-                            listTransacoes[index].valor.toString();
-                        _selectedDate = listTransacoes[index].data;
-                        _tipo = listTransacoes[index].tipo.name;
+                        idTransacao = transacao.id;
+                        _descricaoController.text = transacao.descricao;
+                        _valorController.text = transacao.valor.toString();
+                        _selectedDate = transacao.data;
+                        _tipo = transacao.tipo.name;
 
                         _showAddTransactionDialog(context);
-                      });
+                      },
+                    ),
+                  );
                 },
               ),
             ),
@@ -240,6 +261,25 @@ class _HomeFinancasState extends State<HomeFinancas> {
       resetFieldsForm();
       getResume();
       getTransactions();
+    }
+  }
+
+  removeTransaction(String idTransaction) async {
+    bool removeSuccesfully =
+        await _financasService.removeTransaction(idTransaction);
+
+    if (removeSuccesfully) {
+      getResume();
+      getTransactions();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Transação removida com sucesso!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else {
+      //aqui deu erro
     }
   }
 

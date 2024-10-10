@@ -93,6 +93,22 @@ class FinancasService {
     }
   }
 
+  Future<bool> removeTransaction(String idTransaction) async {
+    try {
+      Response response =
+          await _dio.delete('${_dio.options.baseUrl}/$idTransaction');
+
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Erro ao alterar transação: $e');
+      return false;
+    }
+  }
+
   Future<Resumo?> getResume() async {
     try {
       Response response =
