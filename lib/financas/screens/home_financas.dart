@@ -1,3 +1,4 @@
+import 'package:app_casal_flutter/components/snack_bars.dart';
 import 'package:app_casal_flutter/financas/componentes/header_financas.dart';
 import 'package:app_casal_flutter/financas/componentes/transacao_item.dart';
 import 'package:app_casal_flutter/financas/models/resumo.dart';
@@ -238,12 +239,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
                 if (_descricaoController.text.isEmpty ||
                     _valorController.numberValue <= 0 ||
                     _selectedDate == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Preencha todos os campos!'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  showErrorSnackBar(context, "Preencha todos os campos!");
                 } else {
                   addTransaction(Transacao(
                     id: idTransacao,
@@ -276,6 +272,8 @@ class _HomeFinancasState extends State<HomeFinancas> {
     setState(() {
       if (listaTransacao?.isNotEmpty == true) {
         listTransacoes = listaTransacao!;
+      } else {
+        showErrorSnackBar(context, "Erro ao recuperar as transações!");
       }
     });
   }
@@ -293,6 +291,8 @@ class _HomeFinancasState extends State<HomeFinancas> {
       resetFieldsForm();
       getResume();
       getTransactions();
+    } else {
+      showErrorSnackBar(context, "Erro ao inserir/alterar transação!");
     }
   }
 
@@ -304,14 +304,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
       getResume();
       getTransactions();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Transação removida com sucesso!'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      showErrorSnackBar(context, "Transação removida com sucesso!");
     } else {
-      //aqui deu erro
+      showErrorSnackBar(context, "Erro ao remover transação!");
     }
   }
 
@@ -326,14 +321,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
       getResume();
       getTransactions();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Transações removidas com sucesso!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      showSuccessSnackBar(context, "Transações removidas com sucesso!");
     } else {
-      //aqui deu erro
+      showErrorSnackBar(context, "Erro ao remover as transações");
     }
   }
 
@@ -343,6 +333,8 @@ class _HomeFinancasState extends State<HomeFinancas> {
     setState(() {
       if (resume != null) {
         resumo = resume;
+      } else {
+        showErrorSnackBar(context, "Erro ao recuperar resumo!");
       }
     });
   }
@@ -366,7 +358,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
     if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
         _selectedDate = pickedDate;
-        Navigator.pop(context); // Fechar o diálogo para recarregar o estado
+        Navigator.pop(context);
         _showAddTransactionDialog(context);
       });
     }

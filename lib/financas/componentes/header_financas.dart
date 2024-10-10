@@ -29,7 +29,7 @@ class _HeaderFinancasState extends State<HeaderFinancas> {
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Padding(
-            padding: EdgeInsets.all(16.0), // Espaçamento interno
+            padding: EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
