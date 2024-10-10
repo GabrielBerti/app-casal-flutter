@@ -43,6 +43,14 @@ class _HomeFinancasState extends State<HomeFinancas> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Finanças'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_forever),
+            onPressed: () {
+              _showConfirmationRemoveTransactionDialog(context);
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -58,16 +66,13 @@ class _HomeFinancasState extends State<HomeFinancas> {
                   final transacao = listTransacoes[index];
 
                   return Dismissible(
-                    key: Key(transacao.id
-                        .toString()), // Usar um identificador único para o item
-                    direction: DismissDirection
-                        .endToStart, // Deslizar da direita para esquerda
+                    key: Key(transacao.id.toString()),
+                    direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      color: Colors.red, // Cor de fundo ao deslizar
-                      child: const Icon(Icons.delete,
-                          color: Colors.white), // Ícone de lixeira
+                      color: Colors.red,
+                      child: const Icon(Icons.delete, color: Colors.white),
                     ),
                     onDismissed: (direction) {
                       setState(() {
@@ -102,6 +107,33 @@ class _HomeFinancasState extends State<HomeFinancas> {
         backgroundColor: Colors.blueAccent,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  void _showConfirmationRemoveTransactionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmação'),
+          content: const Text('Você deseja remover todas as transações?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Não'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                removeAllTransactions();
+              },
+              child: const Text('Sim'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -276,6 +308,28 @@ class _HomeFinancasState extends State<HomeFinancas> {
         const SnackBar(
           content: Text('Transação removida com sucesso!'),
           backgroundColor: Colors.red,
+        ),
+      );
+    } else {
+      //aqui deu erro
+    }
+  }
+
+  removeAllTransactions() async {
+    bool removeSuccesfully = await _financasService.removeAllTransactions();
+
+    if (removeSuccesfully) {
+      setState(() {
+        listTransacoes.clear();
+      });
+
+      getResume();
+      getTransactions();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Transações removidas com sucesso!'),
+          backgroundColor: Colors.green,
         ),
       );
     } else {

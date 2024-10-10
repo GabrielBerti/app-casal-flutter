@@ -5,6 +5,9 @@ class Resumo {
   Resumo({required this.saldoBiel, required this.saldoMari});
 
   factory Resumo.fromJson(Map<String, dynamic> json) {
-    return Resumo(saldoBiel: json['saldoBiel'], saldoMari: json['saldoMari']);
+    double saldoBiel = json['saldoBiel'] ?? 0.0;
+    double saldoMari = json['saldoMari'] ?? 0.0;
+
+    return Resumo(saldoBiel: saldoBiel, saldoMari: saldoMari);
   }
 }

@@ -104,7 +104,23 @@ class FinancasService {
         return false;
       }
     } catch (e) {
-      print('Erro ao alterar transação: $e');
+      print('Erro ao remover transação: $e');
+      return false;
+    }
+  }
+
+  Future<bool> removeAllTransactions() async {
+    try {
+      Response response =
+          await _dio.delete('${_dio.options.baseUrl}/deleteAll');
+
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Erro ao remover transações: $e');
       return false;
     }
   }

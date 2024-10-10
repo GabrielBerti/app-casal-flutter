@@ -7,11 +7,12 @@ void main() {
 }
 
 class AppCasal extends StatelessWidget {
-    const AppCasal({ super.key });
+  const AppCasal({super.key});
 
-    @override
-    Widget build(BuildContext context){
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'App Casal',
       theme: MyTheme,
       home: const Home(),

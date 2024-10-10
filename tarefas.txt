@@ -1,6 +1,5 @@
 - Módulo Finanças
-    - Remover todas transações
-    - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro
+    - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro (deixar snack bar como componente)
 
 - Módulo Metas
 
