@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 
 class TransacaoItem extends StatelessWidget {
   final Transacao transacao;
+  final VoidCallback onTap;
 
-  const TransacaoItem({super.key, required this.transacao});
+  const TransacaoItem(
+      {super.key, required this.transacao, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,64 +19,66 @@ class TransacaoItem extends StatelessWidget {
         constraints: const BoxConstraints(
           maxWidth: double.infinity, // Ocupará toda a largura disponível
         ),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 88, 90, 94),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0), // Espaçamento interno
-            child: Row(
-              children: [
-                Icon(
-                  Icons.attach_money_outlined,
-                  size: 42,
-                  color: transacao.tipo == Tipo.biel
-                      ? ThemeColors.colorBiel
-                      : ThemeColors.colorMari,
-                ),
-                const SizedBox(
-                    width: 8.0), // Espaçamento entre o ícone e o texto
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      transacao.descricao,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none,
-                        color: Colors.white,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 88, 90, 94),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.attach_money_outlined,
+                    size: 42,
+                    color: transacao.tipo == Tipo.biel
+                        ? ThemeColors.colorBiel
+                        : ThemeColors.colorMari,
+                  ),
+                  const SizedBox(width: 8.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        transacao.descricao,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.none,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('dd/MM/yyyy').format(transacao.data),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        decoration: TextDecoration.none,
-                        color: Colors.white,
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(transacao.data),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.none,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                          .format(transacao.valor),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none,
-                        color: Colors.white,
+                    ],
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                            .format(transacao.valor),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.none,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -18,6 +18,7 @@ class HomeFinancas extends StatefulWidget {
 class _HomeFinancasState extends State<HomeFinancas> {
   List<Transacao> listTransacoes = [];
   Resumo resumo = Resumo(saldoBiel: 0.0, saldoMari: 0.0);
+  int? idTransacao;
 
   final FinancasService _financasService = FinancasService();
 
@@ -28,7 +29,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
     thousandSeparator: '.',
   );
   DateTime? _selectedDate;
-  String? _tipo = Tipo.mari.toString(); // Valor inicial do RadioButton
+  String? _tipo = Tipo.mari.name; // Valor inicial do RadioButton
 
   @override
   void initState() {
@@ -54,7 +55,19 @@ class _HomeFinancasState extends State<HomeFinancas> {
               child: ListView.builder(
                 itemCount: listTransacoes.length,
                 itemBuilder: (context, index) {
-                  return TransacaoItem(transacao: listTransacoes[index]);
+                  return TransacaoItem(
+                      transacao: listTransacoes[index],
+                      onTap: () {
+                        idTransacao = listTransacoes[index].id;
+                        _descricaoController.text =
+                            listTransacoes[index].descricao;
+                        _valorController.text =
+                            listTransacoes[index].valor.toString();
+                        _selectedDate = listTransacoes[index].data;
+                        _tipo = listTransacoes[index].tipo.name;
+
+                        _showAddTransactionDialog(context);
+                      });
                 },
               ),
             ),
@@ -131,7 +144,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
                           'Mari',
                           style: TextStyle(fontSize: 14),
                         ),
-                        value: 'Mari',
+                        value: Tipo.mari.name,
                         groupValue: _tipo,
                         onChanged: (value) {
                           setState(() {
@@ -150,7 +163,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
                           'Biel',
                           style: TextStyle(fontSize: 14),
                         ),
-                        value: 'Biel',
+                        value: Tipo.biel.name,
                         groupValue: _tipo,
                         onChanged: (value) {
                           setState(() {
@@ -180,8 +193,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
                   );
                 } else {
                   addTransaction(Transacao(
+                    id: idTransacao,
                     descricao: _descricaoController.text,
-                    tipo: _tipo == Tipo.mari.toString() ? Tipo.mari : Tipo.biel,
+                    tipo: _tipo == Tipo.mari.name ? Tipo.mari : Tipo.biel,
                     valor: _valorController.numberValue,
                     data: _selectedDate ?? DateTime.now(),
                   ));
@@ -214,8 +228,13 @@ class _HomeFinancasState extends State<HomeFinancas> {
   }
 
   addTransaction(Transacao formTransacion) async {
-    Transacao? newTransaction =
-        await _financasService.addTransaction(formTransacion);
+    Transacao? newTransaction;
+
+    if (idTransacao == null) {
+      newTransaction = await _financasService.addTransaction(formTransacion);
+    } else {
+      newTransaction = await _financasService.updateTrasaction(formTransacion);
+    }
 
     if (newTransaction != null) {
       resetFieldsForm();
@@ -235,10 +254,11 @@ class _HomeFinancasState extends State<HomeFinancas> {
   }
 
   resetFieldsForm() {
+    idTransacao = null;
     _descricaoController.text = "";
     _valorController.text = "0.0";
     _selectedDate = null;
-    _tipo = Tipo.mari.toString();
+    _tipo = Tipo.mari.name;
   }
 
   Future<void> _selectDate(

@@ -21,28 +21,18 @@ class FinancasInterceptor extends Interceptor {
     log +=
         "Cabeçalho: ${const JsonEncoder.withIndent("  ").convert(options.headers)}\n";
 
-    if (options.data != null) {
-      try {
-        log +=
-            "Corpo: ${const JsonEncoder.withIndent("  ").convert(json.decode(options.data.toString()))}\n";
-      } catch (e) {
-        log += "Corpo: ${options.data}\n";
-      }
-    } else {
-      log += "Corpo: null\n";
-    }
+    // if (options.data != null) {
+    //   try {
+    //     log +=
+    //         "Corpo: ${const JsonEncoder.withIndent("  ").convert(json.decode(options.data.toString()))}\n";
+    //   } catch (e) {
+    //     log += "Corpo: ${options.data}\n";
+    //   }
+    // } else {
+    //   log += "Corpo: null\n";
+    // }
 
     _logger.w(log);
     super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    super.onResponse(response, handler);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    super.onError(err, handler);
   }
 }

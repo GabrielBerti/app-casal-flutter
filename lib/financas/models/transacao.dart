@@ -1,14 +1,14 @@
 import 'package:app_casal_flutter/financas/models/tipo.dart';
 
 class Transacao {
-  int id = 0;
+  int? id = 0;
   String descricao = "";
   double valor = 0.0;
   Tipo tipo = Tipo.biel;
   DateTime data = DateTime.now();
 
   Transacao(
-      {id,
+      {this.id,
       required this.valor,
       required this.descricao,
       required this.tipo,
@@ -16,7 +16,7 @@ class Transacao {
 
   factory Transacao.fromJson(Map<String, dynamic> json) {
     Tipo typeTransaction = Tipo.values.firstWhere(
-      (tipo) => tipo.toString().toUpperCase().split('.').last == json['tipo'],
+      (tipo) => tipo.name.toUpperCase().split('.').last == json['tipo'],
       orElse: () => Tipo.mari,
     );
 

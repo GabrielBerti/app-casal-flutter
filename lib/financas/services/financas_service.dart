@@ -49,13 +49,39 @@ class FinancasService {
         'data': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .format(newTransaction.data),
         'descricao': newTransaction.descricao,
-        'tipo': newTransaction.tipo.toString().toUpperCase(),
+        'tipo': newTransaction.tipo.name.toUpperCase(),
         'valor': newTransaction.valor,
       };
 
       Response response = await _dio.post(_dio.options.baseUrl, data: data);
 
       if (response.statusCode == 201) {
+        Transacao transaction = Transacao.fromJson(response.data);
+        return transaction;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Erro ao inserir transação: $e');
+      return null;
+    }
+  }
+
+  Future<Transacao?> updateTrasaction(Transacao transactionUpdate) async {
+    try {
+      Map<String, dynamic> data = {
+        'id': transactionUpdate.id,
+        'data': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .format(transactionUpdate.data),
+        'descricao': transactionUpdate.descricao,
+        'tipo': transactionUpdate.tipo.name.toUpperCase(),
+        'valor': transactionUpdate.valor,
+      };
+
+      Response response = await _dio
+          .put('${_dio.options.baseUrl}/${transactionUpdate.id}', data: data);
+
+      if (response.statusCode == 200) {
         Transacao transaction = Transacao.fromJson(response.data);
         return transaction;
       } else {

@@ -1,5 +1,4 @@
 - Módulo Finanças
-    - Alterar transação
     - Remover transação
     - Remover todas transações
     - Atualizar lista após qualquer ação e dar mensagem de sucesso ou erro
