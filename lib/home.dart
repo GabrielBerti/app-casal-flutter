@@ -1,10 +1,12 @@
 import 'package:app_casal_flutter/financas/screens/home_financas.dart';
+import 'package:app_casal_flutter/financas/screens/home_metas.dart';
 import 'package:app_casal_flutter/modulo_card_item.dart';
 import 'package:app_casal_flutter/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:app_casal_flutter/financas/models/meta.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,12 @@ class Home extends StatelessWidget {
                   icon: Icons.done_outline_rounded,
                   colorBg: ThemeColors.purpleCard,
                   onTap: () {
-                    print('Módulo metas clicado!');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (contextNew) => MetasPage(),
+                      ),
+                    );
                   }),
               ModuloCardItem(
                   text: "Receitas",

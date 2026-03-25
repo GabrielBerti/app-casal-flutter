@@ -1,5 +1,2 @@
-- Módulo Metas
-
 - Módulo Receitas
-
 - Módulo Viagens

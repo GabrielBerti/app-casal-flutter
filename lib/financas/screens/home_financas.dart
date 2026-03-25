@@ -5,6 +5,7 @@ import 'package:app_casal_flutter/financas/models/resumo.dart';
 import 'package:app_casal_flutter/financas/models/tipo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
 import 'package:app_casal_flutter/financas/services/financas_service.dart';
+import 'package:app_casal_flutter/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
@@ -87,7 +88,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
                       onTap: () {
                         idTransacao = transacao.id;
                         _descricaoController.text = transacao.descricao;
-                        _valorController.text = transacao.valor.toString();
+                        _valorController.text = transacao.valor
+                            .toStringAsFixed(2)
+                            .replaceAll('.', ',');
                         _selectedDate = transacao.data;
                         _tipo = transacao.tipo.name;
 
@@ -105,7 +108,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
         onPressed: () {
           _showAddTransactionDialog(context);
         },
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.green,
         child: const Icon(Icons.add),
       ),
     );
@@ -144,123 +147,189 @@ class _HomeFinancasState extends State<HomeFinancas> {
   }
 
   void _showAddTransactionDialog(BuildContext context) {
+    _selectedDate ??= DateTime.now();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'Adicionar Transação',
-            style: TextStyle(fontSize: 18),
+        return Dialog(
+          backgroundColor: const Color(0xFF1E1E1E),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _descricaoController,
-                  decoration: const InputDecoration(
-                    labelText: 'Descrição do lançamento',
-                    labelStyle: TextStyle(fontSize: 14),
-                    contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // TÍTULO
+                  const Text(
+                    'Adicionar Transação',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  style: const TextStyle(fontSize: 14),
-                ),
-                TextField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: _selectedDate == null
-                        ? 'Selecione uma data'
-                        : 'Data: ${DateFormat('dd/MM/yyyy').format(_selectedDate!)}',
-                    labelStyle: const TextStyle(fontSize: 14),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
-                  ),
-                  style: const TextStyle(fontSize: 14),
-                  onTap: () {
-                    _selectDate(context, _selectedDate);
-                  },
-                ),
-                TextField(
-                  controller: _valorController,
-                  decoration: const InputDecoration(
-                    labelText: 'Valor',
-                    labelStyle: TextStyle(fontSize: 14),
-                    contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                  ),
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(fontSize: 14),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: RadioListTile<String>(
-                        title: const Text(
-                          'Mari',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        value: Tipo.mari.name,
-                        groupValue: _tipo,
-                        onChanged: (value) {
-                          setState(() {
-                            _tipo = value;
-                          });
-                          Navigator.pop(
-                              context); // Fechar o diálogo para recarregar o estado
-                          _showAddTransactionDialog(
-                              context); // Reabrir para refletir a mudança
-                        },
+                  const SizedBox(height: 20),
+
+                  // DESCRIÇÃO
+                  TextField(
+                    controller: _descricaoController,
+                    decoration: InputDecoration(
+                      labelText: 'Descrição',
+                      labelStyle: const TextStyle(color: Colors.white70),
+                      filled: true,
+                      fillColor: Colors.grey[850],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    Expanded(
-                      child: RadioListTile<String>(
-                        title: const Text(
-                          'Biel',
-                          style: TextStyle(fontSize: 14),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // DATA
+                  GestureDetector(
+                    onTap: () => _selectDate(context, _selectedDate),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText:
+                              'Data: ${DateFormat('dd/MM/yyyy').format(_selectedDate!)}',
+                          labelStyle: const TextStyle(color: Colors.white),
+                          filled: true,
+                          fillColor: Colors.grey[850],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        value: Tipo.biel.name,
-                        groupValue: _tipo,
-                        onChanged: (value) {
-                          setState(() {
-                            _tipo = value;
-                          });
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // VALOR
+                  TextField(
+                    controller: _valorController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Valor',
+                      labelStyle: const TextStyle(color: Colors.white70),
+                      filled: true,
+                      fillColor: Colors.grey[850],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // RADIOS
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RadioListTile<String>(
+                          activeColor: ThemeColors.colorMari,
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text('Mari',
+                              style: TextStyle(color: Colors.white)),
+                          value: Tipo.mari.name,
+                          groupValue: _tipo,
+                          onChanged: (value) {
+                            setState(() => _tipo = value);
+                            Navigator.pop(context);
+                            _showAddTransactionDialog(context);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: RadioListTile<String>(
+                          activeColor: ThemeColors.colorBiel,
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text('Biel',
+                              style: TextStyle(color: Colors.white)),
+                          value: Tipo.biel.name,
+                          groupValue: _tipo,
+                          onChanged: (value) {
+                            setState(() => _tipo = value);
+                            Navigator.pop(context);
+                            _showAddTransactionDialog(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          resetFieldsForm();
                           Navigator.pop(context);
-                          _showAddTransactionDialog(context);
                         },
+                        child: const Text("Cancelar"),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_descricaoController.text.isEmpty ||
+                              _valorController.numberValue <= 0 ||
+                              _selectedDate == null) {
+                            showSnackBar(context, "Preencha todos os campos!",
+                                erro: true);
+                            return;
+                          }
+
+                          addTransaction(
+                            Transacao(
+                              id: idTransacao,
+                              descricao: _descricaoController.text,
+                              tipo: _tipo == Tipo.mari.name
+                                  ? Tipo.mari
+                                  : Tipo.biel,
+                              valor: _valorController.numberValue,
+                              data: _selectedDate!,
+                            ),
+                          );
+
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Salvar"),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (_descricaoController.text.isEmpty ||
-                    _valorController.numberValue <= 0 ||
-                    _selectedDate == null) {
-                  showErrorSnackBar(context, "Preencha todos os campos!");
-                } else {
-                  addTransaction(Transacao(
-                    id: idTransacao,
-                    descricao: _descricaoController.text,
-                    tipo: _tipo == Tipo.mari.name ? Tipo.mari : Tipo.biel,
-                    valor: _valorController.numberValue,
-                    data: _selectedDate ?? DateTime.now(),
-                  ));
-                  Navigator.of(context).pop(); // Fechar o diálogo
-                }
-              },
-              child: const Text('Salvar', style: TextStyle(fontSize: 14)),
-            ),
-            TextButton(
-              onPressed: () {
-                resetFieldsForm();
-                Navigator.of(context).pop(); // Fechar o diálogo
-              },
-              child: const Text('Cancelar', style: TextStyle(fontSize: 14)),
-            ),
-          ],
         );
       },
     );
@@ -273,7 +342,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
       if (listaTransacao?.isNotEmpty == true) {
         listTransacoes = listaTransacao!;
       } else {
-        showErrorSnackBar(context, "Erro ao recuperar as transações!");
+        showSnackBar(context, "Erro ao recuperar as transações!", erro: false);
       }
     });
   }
@@ -287,13 +356,16 @@ class _HomeFinancasState extends State<HomeFinancas> {
       newTransaction = await _financasService.updateTrasaction(formTransacion);
     }
 
-    if (newTransaction != null) {
-      resetFieldsForm();
-      getResume();
-      getTransactions();
-    } else {
-      showErrorSnackBar(context, "Erro ao inserir/alterar transação!");
+    if (newTransaction == null) {
+      showSnackBar(context, "Erro ao adicionar/alterar transação!", erro: true);
+      return;
     }
+
+    showSnackBar(context, "Transação efetuada com sucesso!");
+
+    resetFieldsForm();
+    getResume();
+    getTransactions();
   }
 
   removeTransaction(String idTransaction) async {
@@ -304,9 +376,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
       getResume();
       getTransactions();
 
-      showErrorSnackBar(context, "Transação removida com sucesso!");
+      showSnackBar(context, "Transação removida com sucesso!");
     } else {
-      showErrorSnackBar(context, "Erro ao remover transação!");
+      showSnackBar(context, "Erro ao remover transação!", erro: true);
     }
   }
 
@@ -321,9 +393,9 @@ class _HomeFinancasState extends State<HomeFinancas> {
       getResume();
       getTransactions();
 
-      showSuccessSnackBar(context, "Transações removidas com sucesso!");
+      showSnackBar(context, "Transações removidas com sucesso!");
     } else {
-      showErrorSnackBar(context, "Erro ao remover as transações");
+      showSnackBar(context, "Erro ao remover as transações", erro: true);
     }
   }
 
@@ -334,7 +406,7 @@ class _HomeFinancasState extends State<HomeFinancas> {
       if (resume != null) {
         resumo = resume;
       } else {
-        showErrorSnackBar(context, "Erro ao recuperar resumo!");
+        showSnackBar(context, "Erro ao recuperar resumo!", erro: true);
       }
     });
   }

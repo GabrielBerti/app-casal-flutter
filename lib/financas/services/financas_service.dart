@@ -1,14 +1,14 @@
 import 'package:app_casal_flutter/financas/models/resumo.dart';
 import 'package:app_casal_flutter/financas/models/transacao.dart';
-import 'package:app_casal_flutter/financas/services/financas_endpoints.dart';
-import 'package:app_casal_flutter/financas/services/financas_interceptor.dart';
+import 'package:app_casal_flutter/financas/services/url_base_endpoints.dart';
+import 'package:app_casal_flutter/financas/services/endpoint_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 
 class FinancasService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: FinancasEndpoints.devBaseUrl,
+      baseUrl: UrlBaseEndpoints.baseUrlTransacoes,
       contentType: Headers.jsonContentType,
       responseType: ResponseType.json,
       connectTimeout: const Duration(seconds: 30),
@@ -17,7 +17,7 @@ class FinancasService {
   );
 
   FinancasService() {
-    _dio.interceptors.add(FinancasInterceptor());
+    _dio.interceptors.add(EndpointInterceptor());
   }
 
   Future<List<Transacao>?> getTransactions() async {

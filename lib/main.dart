@@ -15,7 +15,7 @@ class AppCasal extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'App Casal',
       theme: MyTheme,
-      home: const Home(),
+      home: Home(),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:logger/web.dart';
 
-class FinancasInterceptor extends Interceptor {
+class EndpointInterceptor extends Interceptor {
   final Logger _logger = Logger(
     printer: PrettyPrinter(
       methodCount: 0,
