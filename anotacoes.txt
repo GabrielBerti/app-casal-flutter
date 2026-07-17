@@ -1,3 +1,5 @@
 Para fazer o build no IOS, executar os comandos
+    -- para o Mac reconhecer o iphone, é necessário iniciar o Mac em modo seguro (ligue e imeditatamente pressione SHIFT, continue segurando até aparecer a tela de login)
     -- flutter build ios --release
-    -- flutter install
+    -- verifique os devices conectados: flutter devices
+    -- flutter run --release -d "iPhone de Mariana"
