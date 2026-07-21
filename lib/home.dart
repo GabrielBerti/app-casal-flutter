@@ -1,9 +1,9 @@
 import 'package:app_casal_flutter/financas/screens/home_financas.dart';
 import 'package:app_casal_flutter/financas/screens/home_metas.dart';
+import 'package:app_casal_flutter/financas/screens/receitas_page.dart';
 import 'package:app_casal_flutter/modulo_card_item.dart';
 import 'package:app_casal_flutter/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:app_casal_flutter/financas/models/meta.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -71,7 +71,12 @@ class Home extends StatelessWidget {
                   icon: Icons.food_bank_outlined,
                   colorBg: ThemeColors.blueCard,
                   onTap: () {
-                    print('Módulo receitas clicado!');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (contextNew) => ReceitasPage(),
+                      ),
+                    );
                   }),
               ModuloCardItem(
                   text: "Viagens",

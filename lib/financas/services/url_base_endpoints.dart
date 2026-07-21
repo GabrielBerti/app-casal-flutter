@@ -7,4 +7,6 @@ class UrlBaseEndpoints {
   static const String baseUrlTransacoes = '$baseUrl/transacoes';
 
   static const String baseUrlMetas = '$baseUrl/metas';
+  static const String baseUrlReceitas = '$baseUrl/receitas';
+  static const String baseUrlIngredientes = '$baseUrl/ingredientes';
 }

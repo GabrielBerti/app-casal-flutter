@@ -3,3 +3,7 @@ Para fazer o build no IOS, executar os comandos
     -- flutter build ios --release
     -- verifique os devices conectados: flutter devices
     -- flutter run --release -d "iPhone de Mariana"
+
+Para buildar no android:
+    -- para encontrar o nome/id do device: flutter devices
+    -- depois para executar: flutter run -d 2107113SG
