@@ -8,34 +8,56 @@ import Flutter
 
     override func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions:
-        [UIApplication.LaunchOptionsKey: Any]?
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-        let controller =
-            window?.rootViewController as! FlutterViewController
+        GeneratedPluginRegistrant.register(with: self)
 
-        let methodChannel = FlutterMethodChannel(
-            name: channel,
-            binaryMessenger: controller.binaryMessenger
-        )
+        DispatchQueue.main.async {
 
-        methodChannel.setMethodCallHandler { call, result in
+            guard
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                let window = windowScene.windows.first,
+                let controller = window.rootViewController as? FlutterViewController
+            else {
+                return
+            }
 
-            if call.method == "openUrl" {
+            let methodChannel = FlutterMethodChannel(
+                name: self.channel,
+                binaryMessenger: controller.binaryMessenger
+            )
 
-                if let args = call.arguments as? [String: Any],
-                   let urlString = args["url"] as? String,
-                   let url = URL(string: urlString) {
+            methodChannel.setMethodCallHandler { call, result in
 
-                    UIApplication.shared.open(url)
+                guard call.method == "openUrl" else {
+                    result(FlutterMethodNotImplemented)
+                    return
+                }
 
-                    result(nil)
+                guard
+                    let args = call.arguments as? [String: Any],
+                    let urlString = args["url"] as? String,
+                    let url = URL(string: urlString)
+                else {
+                    result(
+                        FlutterError(
+                            code: "INVALID_URL",
+                            message: "URL inválida",
+                            details: nil
+                        )
+                    )
+                    return
+                }
+
+                UIApplication.shared.open(
+                    url,
+                    options: [:]
+                ) { success in
+                    result(success)
                 }
             }
         }
-
-        GeneratedPluginRegistrant.register(with: self)
 
         return super.application(
             application,

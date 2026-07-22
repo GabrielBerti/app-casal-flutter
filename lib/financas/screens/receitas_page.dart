@@ -190,7 +190,7 @@ class _ReceitasPageState extends State<ReceitasPage> {
                                     _buscarReceitas();
                                   },
                                   child: Container(
-                                    height: 74,
+                                    height: 58,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 18),
                                     child: Row(
@@ -198,7 +198,7 @@ class _ReceitasPageState extends State<ReceitasPage> {
                                         const Icon(
                                           Icons.local_pizza,
                                           color: Colors.black,
-                                          size: 36,
+                                          size: 24,
                                         ),
                                         const SizedBox(width: 14),
                                         Expanded(
@@ -216,14 +216,6 @@ class _ReceitasPageState extends State<ReceitasPage> {
                                                   color: Colors.white,
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 2),
-                                              const Text(
-                                                'Clique aqui para detalhes',
-                                                style: TextStyle(
-                                                  color: Colors.white70,
-                                                  fontSize: 13,
                                                 ),
                                               ),
                                             ],
